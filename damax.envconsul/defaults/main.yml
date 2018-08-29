@@ -1,0 +1,6 @@
+---
+
+envconsul_version:        0.7.2
+envconsul_download_url:   'https://releases.hashicorp.com/envconsul/{{ envconsul_version }}/envconsul_{{ envconsul_version }}_linux_amd64.tgz'
+envconsul_key_prefix:     app
+envconsul_consul_address: localhost

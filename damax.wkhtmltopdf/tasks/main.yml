@@ -1,0 +1,44 @@
+---
+
+# - name: Add fonts repository
+#   apt_repository:
+#     repo: deb http://ftp.ru.debian.org/debian/ stretch main non-free contrib
+#     state: present
+
+- name: Accept fonts EULA
+  debconf:
+    name: ttf-mscorefonts-installer
+    question: msttcorefonts/accepted-mscorefonts-eula
+    vtype: select
+    value: true
+
+- name: Ensure dependencies are installed
+  apt: name='{{ item }}' state=present update_cache=yes
+  with_items:
+    - fontconfig
+    - libfontconfig1
+    - libfreetype6
+    - libpng-dev
+    - libxrender1
+    - xfonts-base
+    - xfonts-75dpi
+    - ttf-mscorefonts-installer
+
+- name: Download wkhtmltopdf
+  unarchive:
+    src: 'https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/{{ wkhtmltopdf_version }}/wkhtmltox-{{ wkhtmltopdf_version }}_linux-generic-{{ wkhtmltopdf_architecture }}.tar.xz'
+    dest: /tmp
+    remote_src: yes
+
+- name: Copy binaries
+  copy:
+    src: '/tmp/wkhtmltox/bin/{{ item }}'
+    dest: '/usr/local/bin/{{ item }}'
+    mode: 0755
+    remote_src: yes
+  with_items:
+    - wkhtmltoimage
+    - wkhtmltopdf
+
+- name: Remove artifacts
+  file: path=/tmp/wkhtmltox state=absent

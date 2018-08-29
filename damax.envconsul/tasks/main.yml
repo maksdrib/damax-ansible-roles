@@ -1,0 +1,7 @@
+---
+
+- name: Download and extract envconsul binary
+  unarchive: src='{{ envconsul_download_url }}' dest=/usr/local/bin/ mode=755 remote_src=yes
+
+- name: Copy envconsul config
+  template: src=envconsul.hcl.j2 dest=/etc/envconsul.hcl

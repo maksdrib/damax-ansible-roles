@@ -1,0 +1,11 @@
+---
+
+- name: Download shell integration script
+  get_url: url=https://iterm2.com/misc/bash_startup.in dest=~/.iterm2 mode=0700
+  become: true
+  become_user: '{{ iterm_user }}'
+
+- name: Add integration script to bash_profile
+  lineinfile: create=yes dest=~/.bash_profile mode=0500 line='source ~/.iterm2'
+  become: true
+  become_user: '{{ iterm_user }}'

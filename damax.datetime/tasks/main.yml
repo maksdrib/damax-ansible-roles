@@ -1,0 +1,19 @@
+---
+
+- name: Generate locale
+  locale_gen: name='{{ datetime_locale }}' state=present
+
+- name: Update locale
+  command: '/usr/sbin/update-locale LANG={{ datetime_locale }} LC_ALL={{ datetime_locale }}'
+
+- name: Configue ntp
+  include_role: name=geerlingguy.ntp
+  vars:
+    ntp_timezone:      '{{ datetime_timezone }}'
+    ntp_area:          '{{ datetime_area }}'
+    ntp_manage_config: true
+
+- name: Install utitilies
+  apt: name='{{ item }}'
+  with_items:
+    - ntpstat

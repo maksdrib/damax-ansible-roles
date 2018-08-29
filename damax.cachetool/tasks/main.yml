@@ -1,0 +1,4 @@
+---
+
+- name: Download CacheTool
+  get_url: url=http://gordalina.github.io/cachetool/downloads/cachetool.phar dest=/usr/local/bin/cachetool mode=755
